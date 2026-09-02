@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # 빌드가 먼저다. 패키지 간 참조가 dist의 선언 파일을 타므로
+      # 린트와 테스트가 이것에 의존한다.
+      - run: pnpm build
+
+      - run: pnpm lint
+
+      - run: pnpm depcruise
+
+      # Testcontainers가 실제 PostgreSQL을 띄운다. 러너에 Docker가 있다.
+      - run: pnpm test
