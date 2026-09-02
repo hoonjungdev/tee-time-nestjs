@@ -1,0 +1,19 @@
+{
+  // 린트 전용 프로그램. 빌드 산출물(dist)을 만들지 않으므로 테스트와 설정 파일까지
+  // 타입 정보를 붙여 검사할 수 있다. 빌드 그래프(tsconfig.json)와 목적이 다르다.
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "composite": false,
+    "incremental": false,
+    "declaration": false,
+    "declarationMap": false,
+    "noEmit": true
+  },
+  "include": [
+    "packages/*/src/**/*.ts",
+    "packages/*/test/**/*.ts",
+    "apps/api/src/**/*.ts",
+    "tests/*/src/**/*.ts",
+    "vitest.config.ts"
+  ]
+}

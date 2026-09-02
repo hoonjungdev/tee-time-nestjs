@@ -1,0 +1,6 @@
+node_modules/
+dist/
+pnpm-lock.yaml
+# 문서는 의도한 줄바꿈이 있다. 자동 재포맷하지 않는다.
+docs/
+*.md
