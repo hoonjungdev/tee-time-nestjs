@@ -1,0 +1,28 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src/**/*"],
+  "references": [
+    {
+      "path": "../../packages/booking"
+    },
+    {
+      "path": "../../packages/catalog"
+    },
+    {
+      "path": "../../packages/identity"
+    },
+    {
+      "path": "../../packages/notification"
+    },
+    {
+      "path": "../../packages/payment"
+    },
+    {
+      "path": "../../packages/shared-kernel"
+    }
+  ]
+}

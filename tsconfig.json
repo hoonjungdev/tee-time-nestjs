@@ -1,0 +1,44 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./packages/shared-kernel"
+    },
+    {
+      "path": "./packages/persistence-kernel"
+    },
+    {
+      "path": "./packages/catalog-contracts"
+    },
+    {
+      "path": "./packages/catalog"
+    },
+    {
+      "path": "./packages/booking-contracts"
+    },
+    {
+      "path": "./packages/booking"
+    },
+    {
+      "path": "./packages/payment-contracts"
+    },
+    {
+      "path": "./packages/payment"
+    },
+    {
+      "path": "./packages/identity-contracts"
+    },
+    {
+      "path": "./packages/identity"
+    },
+    {
+      "path": "./packages/notification"
+    },
+    {
+      "path": "./apps/api"
+    },
+    {
+      "path": "./tests/architecture"
+    }
+  ]
+}

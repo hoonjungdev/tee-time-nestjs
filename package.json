@@ -1,0 +1,38 @@
+{
+  "name": "teetime",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.18.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -b",
+    "clean": "tsc -b --clean",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:arch": "vitest run tests/architecture",
+    "depcruise": "depcruise packages apps tests",
+    "db:up": "docker compose up -d postgres",
+    "db:down": "docker compose down",
+    "start:api": "pnpm --filter @teetime/api start"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@swc/core": "^1.16.1",
+    "@testcontainers/postgresql": "^12.1.0",
+    "@types/node": "^26.4.0",
+    "dependency-cruiser": "^18.2.0",
+    "eslint": "^10.9.1",
+    "prettier": "^3.9.6",
+    "testcontainers": "^12.1.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.69.0",
+    "unplugin-swc": "^1.5.11",
+    "vitest": "^4.1.11"
+  }
+}

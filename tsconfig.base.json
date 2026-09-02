@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": ["ES2023"],
+
+    // package.json의 "exports"를 존중하면서 CommonJS로 내보낸다.
+    // 이것이 모듈 경계를 강제하는 실질적 장치다 — 선언하지 않은 서브패스는 해석되지 않는다.
+    "module": "Node16",
+    "moduleResolution": "Node16",
+
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+
+    // NestJS DI와 TypeORM 매핑이 이 메타데이터에 의존한다.
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    // target이 ES2022+면 기본값이 true가 되어 클래스 필드가 defineProperty로 선언된다.
+    // 그러면 TypeORM 엔티티의 모든 필드가 undefined로 "존재"하게 되어,
+    // 부분 로드와 부분 업데이트가 의도대로 동작하지 않는다. 반드시 false다.
+    "useDefineForClassFields": false,
+
+    "composite": true,
+    "incremental": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true
+  }
+}

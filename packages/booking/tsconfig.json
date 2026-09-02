@@ -1,0 +1,25 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src/**/*"],
+  "references": [
+    {
+      "path": "../booking-contracts"
+    },
+    {
+      "path": "../catalog-contracts"
+    },
+    {
+      "path": "../payment-contracts"
+    },
+    {
+      "path": "../persistence-kernel"
+    },
+    {
+      "path": "../shared-kernel"
+    }
+  ]
+}
