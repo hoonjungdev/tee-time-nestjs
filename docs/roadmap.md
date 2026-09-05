@@ -47,7 +47,7 @@ M1로 넘긴 것 (엔티티가 생겨야 의미가 있다):
 - [x] `Club` / `Course` 엔티티 + 어드민 CRUD
 - [ ] `OperatingRule` CRUD
 - [ ] `GreenFeeRule` CRUD
-- [ ] 요금 계산 순수 함수 (`DayType` × `TimeBand`) + 단위 테스트
+- [x] 요금 계산 순수 함수 (`DayType` × `TimeBand`) + 단위 테스트
 - [ ] `CatalogApi` 구현 (`getCourse`, `quoteGreenFee`, `getOperatingDays`)
 
 ### Booking — 슬롯
@@ -170,3 +170,4 @@ BFF를 만들지 않는다. API를 직접 호출하고, 계약은 OpenAPI 문서
           타입 인식 린트(`no-floating-promises`)가 규약의 핵심이라 포기할 수 없었다.
 - 2026-09-05 [M1] Club/Course 엔티티·마이그레이션·어드민 CRUD — `packages/catalog/`
       Testcontainers 공용화 트리거 성립 — 다음 사용처에서 착수
+- 2026-09-05 [M1] 요금 계산 순수 함수·공개 Quote 계약·단위 테스트 — `packages/catalog/`, `packages/catalog-contracts/`
