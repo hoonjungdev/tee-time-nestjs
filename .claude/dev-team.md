@@ -37,6 +37,9 @@
   4. pnpm test:arch
   5. pnpm test
 
+보완 명령: npx tsc -p tsconfig.lint.json --noEmit
+           # 각 패키지 tsconfig의 include가 src/**/* 뿐이라 pnpm typecheck가 test/를 보지 않는다.
+           # M1 Catalog에서 테스트 파일의 exactOptionalPropertyTypes 위반 2건이 초록 뒤에 숨었다.
 부분 실행: pnpm --filter @teetime/<module> test
 테스트 러너: 있음   # vitest + Testcontainers
 
@@ -63,6 +66,7 @@ critic+impl  = codex  / gpt-5.6-terra / high
 test-author  = claude / opus / high
 reviewer     = claude / opus / high
 
-## Codex 규칙 전달
+## Codex 전제
 
+샌드박스 네트워크: 허용됨   # Orca 실행 인자로 샌드박스 우회 (2026-09-05 설정)
 AGENTS.md: 있음-포인터
