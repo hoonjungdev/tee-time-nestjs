@@ -56,6 +56,7 @@ return toHttp(result);   // shared-kernel. 실패면 ErrorCode → status 매핑
 | 리드타임 초과·차단·과거 시각 | 409 | `SlotTooLate`, `SlotBlocked` |
 | 상태 전이 불가 (예: 이미 취소됨) | 409 | `InvalidStateTransition` |
 | 매칭되는 요금 규칙 없음 | 409 | `GreenFeeNotConfigured` |
+| 요금 규칙 Priority 동점(설정 충돌) | 409 | `GreenFeeRuleConflict` |
 | 결제 승인 실패 | 402 | `PaymentDeclined` |
 | 결제 응답 유실 (승인 여부 불명) | 504 | `PaymentTimeout` |
 
