@@ -1,5 +1,12 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, Logger } from '@nestjs/common';
+import type { ErrorCode } from '@teetime/shared-kernel';
 import type { Request, Response } from 'express';
+
+const ERROR_CODE_BY_HTTP_STATUS: Partial<Record<number, ErrorCode>> = {
+  400: 'InvalidRequest',
+  401: 'Unauthorized',
+  403: 'Forbidden',
+};
 
 /**
  * **처리되지 않은 예외만** 담당한다.
@@ -20,6 +27,19 @@ export class UnhandledExceptionFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       // 프레임워크가 던지는 것들(404 라우트, 인증 실패 등)은 그대로 형식만 맞춘다.
       const status = exception.getStatus();
+
+      const errorCode = ERROR_CODE_BY_HTTP_STATUS[status];
+      if (errorCode !== undefined) {
+        response.status(status).json({
+          type: `https://teetime.local/errors/${errorCode}`,
+          title: errorCode,
+          status,
+          detail: exception.message,
+          errorCode,
+          traceId,
+        });
+        return;
+      }
 
       response.status(status).json({
         type: `https://teetime.local/errors/http-${status}`,
