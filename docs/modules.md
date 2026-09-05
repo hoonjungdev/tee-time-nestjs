@@ -254,6 +254,7 @@ src/
 ```
 src/
   features/           create-club/, update-course/ ...   (Repository 직접 사용)
+  pricing/            green-fee-policy.ts   (순수 함수. Repository·DataSource를 모른다)
   persistence/
   catalog.module.ts
   index.ts

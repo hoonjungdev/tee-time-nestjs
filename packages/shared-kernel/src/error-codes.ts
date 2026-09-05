@@ -22,6 +22,8 @@ export const ERROR_CODES = {
   SlotBlocked: 409,
   InvalidStateTransition: 409,
   GreenFeeNotConfigured: 409,
+  /** 최고 Priority 요금 규칙이 여러 개라 설정이 충돌했다. */
+  GreenFeeRuleConflict: 409,
   DuplicateEmail: 409,
   /** 낙관적 락 충돌 — 확정/취소 사이에 남이 같은 행을 바꿨다. */
   ConcurrencyConflict: 409,
