@@ -2,11 +2,14 @@ packages:
   - 'packages/*'
   - 'apps/*'
   - 'tests/*'
+# 빌드 스크립트 실행 여부. 결정하지 않으면 pnpm이 ERR_PNPM_IGNORED_BUILDS로 설치를 중단한다.
+# 전부 실행하지 않는다. 네이티브 바이너리는 모두 optionalDependencies로 배포되므로
+# postinstall 없이 동작하고, 공개 저장소에서 서드파티 install 스크립트를 돌릴 이유가 없다.
 allowBuilds:
-  '@parcel/watcher': set this to true or false
-  '@scarf/scarf': set this to true or false
-  '@swc/core': set this to true or false
-  cpu-features: set this to true or false
-  protobufjs: set this to true or false
-  ssh2: set this to true or false
-  unrs-resolver: set this to true or false
+  '@parcel/watcher': false   # 파일 감시 네이티브 가속. 없으면 폴링으로 떨어진다
+  '@scarf/scarf': false      # 순수 텔레메트리
+  '@swc/core': false         # postinstall이 위 텔레메트리 래퍼다
+  cpu-features: false        # ssh2의 네이티브 가속. 선택적이다
+  protobufjs: false          # CLI 호환 스크립트
+  ssh2: false                # testcontainers -> dockerode 경로. 네이티브 없이 동작한다
+  unrs-resolver: false       # 린트 리졸버. 프리빌트 바이너리를 쓴다
