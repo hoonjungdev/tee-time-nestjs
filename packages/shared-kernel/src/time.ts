@@ -1,3 +1,5 @@
+import '@js-joda/timezone';
+
 export {
   ChronoUnit,
   DateTimeFormatter,
@@ -11,7 +13,7 @@ export {
   ZonedDateTime,
 } from '@js-joda/core';
 
-import { Instant } from '@js-joda/core';
+import { Instant, ZoneId } from '@js-joda/core';
 
 /**
  * 시간을 주입 가능한 의존성으로 만든다.
@@ -27,5 +29,15 @@ export abstract class Clock {
 export class SystemClock extends Clock {
   override now(): Instant {
     return Instant.now();
+  }
+}
+
+/** IANA 시간대 식별자인지 판정한다. */
+export function isValidZoneId(value: string): boolean {
+  try {
+    ZoneId.of(value);
+    return true;
+  } catch {
+    return false;
   }
 }
