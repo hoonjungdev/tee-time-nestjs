@@ -100,5 +100,5 @@ pnpm --filter @teetime/api seed-admin              # 어드민 계정 시드 (�
 - TypeORM + PostgreSQL (모듈별 스키마·DataSource 분리, 단일 인스턴스)
 - 시간은 `@js-joda/core`, 금액은 `decimal.js`
 - pnpm 워크스페이스 (모듈당 패키지 2개: 구현 + contracts)
-- 테스트: Jest + `@swc/jest` + Testcontainers
+- 테스트: Vitest + `unplugin-swc` + Testcontainers
 - 프론트: Next.js + shadcn/ui + Tailwind (BFF 없이 API 직접 호출)
