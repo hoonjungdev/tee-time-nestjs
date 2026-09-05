@@ -25,9 +25,12 @@
 
 M1로 넘긴 것 (엔티티가 생겨야 의미가 있다):
 
-- [ ] 모듈별 `TypeOrmModule.forRoot` 등록과 마이그레이션 히스토리 테이블
+- [ ] 모듈별 `TypeOrmModule.forRoot` 등록과 마이그레이션 히스토리 테이블 — Catalog 완료, 나머지 4개 모듈 잔여
 - [ ] Testcontainers 공용 테스트 베이스 — 지금은 각 테스트 파일이 직접 띄운다.
       공용화는 두 번째 사용처가 생길 때 한다.
+- [ ] 테스트 디렉터리를 타입 체크 그래프에 넣기 — 각 패키지 `tsconfig.json`의 `include`가
+      `src/**/*`뿐이라 `pnpm typecheck`가 `test/`를 보지 않는다. M1 Catalog에서 테스트 파일의
+      `exactOptionalPropertyTypes` 위반 2건이 초록 뒤에 숨어 있었다 (`tsconfig.lint.json`으로만 잡힌다).
 
 ### M0 완료 기준
 
@@ -41,7 +44,7 @@ M1로 넘긴 것 (엔티티가 생겨야 의미가 있다):
 ## M1 — 도메인 + 슬롯 재고
 
 ### Catalog
-- [ ] `Club` / `Course` 엔티티 + 어드민 CRUD
+- [x] `Club` / `Course` 엔티티 + 어드민 CRUD
 - [ ] `OperatingRule` CRUD
 - [ ] `GreenFeeRule` CRUD
 - [ ] 요금 계산 순수 함수 (`DayType` × `TimeBand`) + 단위 테스트
@@ -165,3 +168,5 @@ BFF를 만들지 않는다. API를 직접 호출하고, 계약은 OpenAPI 문서
           밀리초가 상한이며 raw 경로는 마이크로초를 보존한다 (`docs/schema.md` 시간 절)
       (3) typescript-eslint가 TS 7을 지원하지 않아 TypeScript를 6.x로 고정했다.
           타입 인식 린트(`no-floating-promises`)가 규약의 핵심이라 포기할 수 없었다.
+- 2026-09-05 [M1] Club/Course 엔티티·마이그레이션·어드민 CRUD — `packages/catalog/`
+      Testcontainers 공용화 트리거 성립 — 다음 사용처에서 착수
