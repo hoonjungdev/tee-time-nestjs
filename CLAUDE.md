@@ -31,7 +31,7 @@ pnpm --filter @teetime/booking test                # 모듈 하나
 pnpm test:arch                                     # 모듈 경계 검증
 docker compose up -d postgres                      # PostgreSQL
 pnpm --filter @teetime/api start:dev
-pnpm --filter @teetime/booking migration:generate <Name>
+pnpm --filter @teetime/booking migration:generate <path>
 pnpm --filter @teetime/booking migration:run
 pnpm --filter @teetime/api seed-admin              # 어드민 계정 시드 (웹 기동 안 함)
 ```
