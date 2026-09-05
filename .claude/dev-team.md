@@ -62,11 +62,24 @@ base: main
 ## 에이전트
 
 planner      = claude / opus / high
-critic+impl  = codex  / gpt-5.6-terra / high
+critic+impl  = codex  / gpt-6-astra / high
 test-author  = claude / opus / high
-reviewer     = claude / opus / high
+reviewer     = claude / opus        / high
+reviewer     = codex  / gpt-5.6-sol / high
+
+# 리뷰어 두 줄 = 매 런 병렬. 둘 다 같은 체크리스트를 전부 본다 (관점 분할 아님).
+# 분리 축: 계획(opus) ↔ 반론·구현(astra) ↔ 리뷰(opus + sol)
+#   - 구현 ↔ 리뷰1: 교차 provider (codex ↔ claude)
+#   - 구현 ↔ 리뷰2: 교차 세대   (gpt-6 ↔ gpt-5.6)
+#   - 계획 ↔ 리뷰2: opus 가 세운 계획을 codex 가 검증한다 (기존엔 opus ↔ opus 였다)
+# effort 는 전부 명시한다 — astra/sol 의 default_reasoning_level 은 low 다.
+# 2026-09-06 변경: critic+impl 이 gpt-5.6-terra 였다.
 
 ## Codex 전제
 
-샌드박스 네트워크: 허용됨   # Orca 실행 인자로 샌드박스 우회 (2026-09-05 설정)
+샌드박스 네트워크: 허용됨
+근거: 런치인자
+확인일: 2026-09-06
+# 실측 런치 줄 (preflight, gpt-6-astra):
+#   codex '--dangerously-bypass-approvals-and-sandbox' '-m' 'gpt-6-astra' '-c' 'model_reasoning_effort=high'
 AGENTS.md: 있음-포인터
