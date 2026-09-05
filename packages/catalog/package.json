@@ -16,7 +16,10 @@
   ],
   "scripts": {
     "build": "tsc -b",
-    "clean": "rm -rf dist tsconfig.tsbuildinfo"
+    "clean": "rm -rf dist tsconfig.tsbuildinfo",
+    "test": "pnpm --dir ../.. exec vitest run packages/catalog/test",
+    "migration:generate": "typeorm migration:generate -d dist/persistence/catalog.data-source.js -p",
+    "migration:run": "typeorm query -d dist/persistence/catalog.data-source.js 'CREATE SCHEMA IF NOT EXISTS catalog' && typeorm migration:run -d dist/persistence/catalog.data-source.js"
   },
   "dependencies": {
     "@js-joda/core": "^6.1.0",
@@ -34,5 +37,10 @@
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
     "typeorm": "^1.1.1"
+  },
+  "devDependencies": {
+    "@testcontainers/postgresql": "^12.1.0",
+    "@types/express": "^5.0.6",
+    "vitest": "^4.1.11"
   }
 }
