@@ -26,8 +26,8 @@
 M1로 넘긴 것 (엔티티가 생겨야 의미가 있다):
 
 - [ ] 모듈별 `TypeOrmModule.forRoot` 등록과 마이그레이션 히스토리 테이블 — Catalog 완료, 나머지 4개 모듈 잔여
-- [ ] Testcontainers 공용 테스트 베이스 — 지금은 각 테스트 파일이 직접 띄운다.
-      공용화는 두 번째 사용처가 생길 때 한다.
+- [x] Testcontainers 공용 테스트 베이스 — Catalog 통합 테스트 3개가
+      `packages/catalog/test/support/postgres-catalog.ts`를 공유한다. 컨테이너는 파일별로 띄운다.
 - [ ] 테스트 디렉터리를 타입 체크 그래프에 넣기 — 각 패키지 `tsconfig.json`의 `include`가
       `src/**/*`뿐이라 `pnpm typecheck`가 `test/`를 보지 않는다. M1 Catalog에서 테스트 파일의
       `exactOptionalPropertyTypes` 위반 2건이 초록 뒤에 숨어 있었다 (`tsconfig.lint.json`으로만 잡힌다).
@@ -45,10 +45,10 @@ M1로 넘긴 것 (엔티티가 생겨야 의미가 있다):
 
 ### Catalog
 - [x] `Club` / `Course` 엔티티 + 어드민 CRUD
-- [ ] `OperatingRule` CRUD
-- [ ] `GreenFeeRule` CRUD
+- [x] `OperatingRule` CRUD
+- [x] `GreenFeeRule` CRUD
 - [x] 요금 계산 순수 함수 (`DayType` × `TimeBand`) + 단위 테스트
-- [ ] `CatalogApi` 구현 (`getCourse`, `quoteGreenFee`, `getOperatingDays`)
+- [x] `CatalogApi` 구현 (`getCourse`, `quoteGreenFee`, `getOperatingDays`)
 
 ### Booking — 슬롯
 - [ ] `TeeSlot` 엔티티 + 매핑 (상태 컬럼 없음, 인덱스 2종)
@@ -171,3 +171,4 @@ BFF를 만들지 않는다. API를 직접 호출하고, 계약은 OpenAPI 문서
 - 2026-09-05 [M1] Club/Course 엔티티·마이그레이션·어드민 CRUD — `packages/catalog/`
       Testcontainers 공용화 트리거 성립 — 다음 사용처에서 착수
 - 2026-09-05 [M1] 요금 계산 순수 함수·공개 Quote 계약·단위 테스트 — `packages/catalog/`, `packages/catalog-contracts/`
+- 2026-09-06 [M1] OperatingRule·GreenFeeRule 어드민 CRUD와 CatalogApi 구현·공용 테스트 부트스트랩 — `packages/catalog/`, `packages/catalog-contracts/`, `packages/shared-kernel/src/error-codes.ts`, `docs/modules.md`

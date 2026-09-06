@@ -74,7 +74,7 @@
 packages/
   shared-kernel/            @teetime/shared-kernel      Result, ErrorCode, 시간 타입, Decimal — 순수 TypeScript
   persistence-kernel/       @teetime/persistence-kernel TypeORM/pg 전용. 타입 파서, 컬럼 transformer, 트랜잭션 헬퍼
-  catalog-contracts/        @teetime/catalog-contracts  public: CatalogApi, CourseSnapshot, GreenFeeQuote
+  catalog-contracts/        @teetime/catalog-contracts  public: CatalogApi, CourseSnapshot, GreenFeeQuote, OperatingDaySnapshot
   catalog/                  @teetime/catalog
   booking-contracts/        @teetime/booking-contracts  public: 통합 이벤트만
   booking/                  @teetime/booking
@@ -181,15 +181,22 @@ NestJS의 DI 토큰은 값이어야 하므로 인터페이스를 쓸 수 없다.
 ```ts
 // @teetime/catalog-contracts
 export abstract class CatalogApi {
-  abstract getCourse(courseId: string): Promise<CourseSnapshot | null>;
-  abstract quoteGreenFee(courseId: string, teeDate: LocalDate, teeTime: LocalTime): Promise<GreenFeeQuote | null>;
-  abstract getOperatingDays(courseId: string, from: LocalDate, to: LocalDate): Promise<OperatingDaySnapshot[]>;
+  abstract getCourse(courseId: string): Promise<Result<CourseSnapshot>>;
+  abstract quoteGreenFee(courseId: string, teeDate: LocalDate, teeTime: LocalTime): Promise<Result<GreenFeeQuote>>;
+  abstract getOperatingDays(courseId: string, from: LocalDate, to: LocalDate): Promise<Result<readonly OperatingDaySnapshot[]>>;
 }
 ```
 
 `CourseSnapshot`은 Catalog의 엔티티가 아니라 **DTO**다. 엔티티를 경계 밖으로 내보내면 모듈 분리가 무의미해진다.
 Catalog 모듈이 `{ provide: CatalogApi, useClass: CatalogApiService }`로 구현을 등록하고,
 Booking은 `CatalogApi`만 주입받는다.
+
+`CourseSnapshot`은 `{ courseId, clubId, name, holeCount, isActive, timeZone }`이며,
+`isActive`는 코스와 클럽이 모두 활성일 때만 true다. 없는 코스는 `CourseNotFound`다.
+요금 조회는 기존 순수 함수의 `GreenFeeNotConfigured` / `GreenFeeRuleConflict` 구분을 보존한다.
+`OperatingDaySnapshot`은 `{ courseId, date, openTime, closeTime, intervalMinutes }`이며,
+반환 배열과 각 스냅샷 필드는 읽기 전용이다. from/to 양 끝 날짜를 포함하되 활성 운영 규칙이
+없는 날짜는 휴장으로 제외한다. from > to 또는 날짜 차이가 366일을 넘으면 `InvalidRequest`다.
 
 ### 동기 — Booking → Payment (결제 승인)
 
@@ -254,6 +261,7 @@ src/
 ```
 src/
   features/           create-club/, update-course/ ...   (Repository 직접 사용)
+  api/                catalog-api.service.ts   (CatalogApi 구현)
   pricing/            green-fee-policy.ts   (순수 함수. Repository·DataSource를 모른다)
   persistence/
   catalog.module.ts
