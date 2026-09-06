@@ -21,6 +21,7 @@ export const ERROR_CODES = {
   SlotTooLate: 409,
   SlotBlocked: 409,
   InvalidStateTransition: 409,
+  OperatingRuleConflict: 409,
   GreenFeeNotConfigured: 409,
   /** 최고 Priority 요금 규칙이 여러 개라 설정이 충돌했다. */
   GreenFeeRuleConflict: 409,
