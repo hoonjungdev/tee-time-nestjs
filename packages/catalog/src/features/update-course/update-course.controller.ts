@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Patch, Req, Res } from '@nestjs/common';
+import { Body, Controller, Param, ParseUUIDPipe, Patch, Req, Res } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { httpStatusFor, toProblemDetails, type ProblemDetails } from '@teetime/shared-kernel';
 import type { Request, Response } from 'express';
@@ -16,7 +16,7 @@ export class UpdateCourseController {
   @Patch(':courseId')
   @ApiOkResponse({ type: CourseResponse })
   async update(
-    @Param('courseId') courseId: string,
+    @Param('courseId', ParseUUIDPipe) courseId: string,
     @Body() request: UpdateCourseRequest,
     @Req() req: Request & { id?: string },
     @Res({ passthrough: true }) res: Response,

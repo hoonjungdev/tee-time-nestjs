@@ -54,6 +54,28 @@ afterAll(async () => {
 });
 
 describe('Catalog HTTP 경계', () => {
+  it.each([
+    ['updateClub', 'clubs'],
+    ['updateCourse', 'courses'],
+    ['updateOperatingRule', 'operating-rules'],
+    ['updateGreenFeeRule', 'green-fee-rules'],
+  ])('%s_UUID가_아닌_path_parameter_400ProblemDetails', async (_operation, resource) => {
+    const response = await fetch(`${apiUrl}/api/admin/${resource}/abc`, {
+      method: 'PATCH',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ isActive: false }),
+    });
+    expect(response.status).toBe(400);
+    expect(await response.json()).toMatchObject({
+      type: 'https://teetime.local/errors/InvalidRequest',
+      title: 'InvalidRequest',
+      status: 400,
+      detail: expect.any(String),
+      errorCode: 'InvalidRequest',
+      traceId: expect.any(String),
+    });
+  });
+
   it('createCourse_holeCount가_9또는18이_아님_400ProblemDetails', async () => {
     const response = await fetch(`${apiUrl}/api/admin/courses`, {
       method: 'POST',
