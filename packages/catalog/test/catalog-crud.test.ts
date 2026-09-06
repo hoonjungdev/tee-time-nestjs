@@ -1,12 +1,6 @@
-import { NestFactory } from '@nestjs/core';
-import { PostgreSqlContainer, type StartedPostgreSqlContainer } from '@testcontainers/postgresql';
 import { Instant } from '@teetime/shared-kernel';
-import { DataSource } from 'typeorm';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 
-import 'reflect-metadata';
-
-import { CatalogModule } from '../src/catalog.module.js';
 import { CreateClubRequest } from '../src/features/create-club/create-club.contracts.js';
 import { CreateClubHandler } from '../src/features/create-club/create-club.handler.js';
 import { CreateCourseRequest } from '../src/features/create-course/create-course.contracts.js';
@@ -15,12 +9,17 @@ import { ListClubsHandler } from '../src/features/list-clubs/list-clubs.handler.
 import { ListCoursesHandler } from '../src/features/list-courses/list-courses.handler.js';
 import { UpdateClubHandler } from '../src/features/update-club/update-club.handler.js';
 import { UpdateCourseHandler } from '../src/features/update-course/update-course.handler.js';
-import { catalogDataSourceOptions } from '../src/persistence/catalog.data-source.js';
 import { ClubEntity } from '../src/persistence/club.entity.js';
+import {
+  startCatalogTestContext,
+  stopCatalogTestContext,
+  truncateCatalogTables,
+  type CatalogTestContext,
+} from './support/postgres-catalog.js';
 
-let container: StartedPostgreSqlContainer;
-let dataSource: DataSource;
-let app: Awaited<ReturnType<typeof NestFactory.createApplicationContext>>;
+let context: CatalogTestContext;
+let dataSource: CatalogTestContext['dataSource'];
+let app: CatalogTestContext['app'];
 
 function createClubRequest(input: {
   readonly name?: string;
@@ -44,35 +43,19 @@ function createCourseRequest(clubId: string, holeCount?: number): CreateCourseRe
   return request;
 }
 
+// 전역 testTimeout이 30초라 컨테이너 기동 타임아웃을 반드시 명시한다.
 beforeAll(async () => {
-  container = await new PostgreSqlContainer('postgres:18-alpine')
-    .withDatabase('teetime')
-    .withUsername('teetime')
-    .withPassword('teetime')
-    .start();
-
-  process.env['POSTGRES_HOST'] = container.getHost();
-  process.env['POSTGRES_PORT'] = String(container.getPort());
-  process.env['POSTGRES_USER'] = container.getUsername();
-  process.env['POSTGRES_PASSWORD'] = container.getPassword();
-  process.env['POSTGRES_DB'] = container.getDatabase();
-
-  dataSource = new DataSource(catalogDataSourceOptions());
-  await dataSource.initialize();
-  await dataSource.query('CREATE SCHEMA IF NOT EXISTS catalog');
-  await dataSource.runMigrations();
-
-  app = await NestFactory.createApplicationContext(CatalogModule, { logger: false });
+  context = await startCatalogTestContext();
+  dataSource = context.dataSource;
+  app = context.app;
 }, 180_000);
 
 afterEach(async () => {
-  await dataSource.query('TRUNCATE TABLE catalog.courses, catalog.clubs CASCADE');
+  await truncateCatalogTables(dataSource);
 });
 
 afterAll(async () => {
-  await app?.close();
-  if (dataSource?.isInitialized) await dataSource.destroy();
-  await container?.stop();
+  await stopCatalogTestContext(context);
 });
 
 describe('Catalog 마이그레이션과 CRUD', () => {
